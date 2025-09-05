@@ -1,0 +1,51 @@
+User-agent: *
+Allow: /
+
+# Pages importantes à indexer
+Allow: /index.html
+Allow: /tariff.html
+Allow: /abonnement.html
+
+# Dossiers autorisés
+Allow: /image/
+Allow: /dist/
+
+# Interdictions (sécurité et performance)
+Disallow: /server/
+Disallow: /logs/
+Disallow: /.env
+Disallow: /node_modules/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tailwind.config.js
+
+# Pages légales (indexables mais moins prioritaires)
+Allow: /conditions-generales.html
+Allow: /mentions-legales.html  
+Allow: /politique-confidentialite.html
+
+# Optimisations SEO
+Crawl-delay: 1
+
+
+# Informations spécifiques aux moteurs de recherche
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot  
+Allow: /
+Crawl-delay: 1
+
+# Bloquage des bots indésirables (scraping, spam)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
