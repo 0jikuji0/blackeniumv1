@@ -28,7 +28,6 @@ class SendRequestQuoteRequest extends FormRequest
             'telephone' =>  ['required', 'string', 'min:10', 'max:13'],
             'nom' => ['required', 'string', 'max:255'],
             'service' => ['required', 'string', 'max:255'],
-
         ];
     }
 }

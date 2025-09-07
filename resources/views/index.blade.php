@@ -27,12 +27,62 @@
                 background-position: 0 0;
             }
         }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-enter {
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        /* Styles pour le bouton hamburger - 3 barres */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            width: 28px;
+            height: 30px;
+            cursor: pointer;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #374151;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        20px .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
     </style>
 </head>
 
 <body class="bg-white min-h-screen flex flex-col">
+
+    <!-- Votre header original avec ajout de responsivité mobile/tablette -->
     <header class="fixed top-0 left-0 w-full bg-transparent z-50 transition-colors duration-300" id="site-header">
-        <div class="w-full flex items-center justify-between px-6 py-4">
+        <div class="w-full flex items-center justify-between px-4 md:px-6 py-4">
+
             <div class="flex items-center">
                 <!-- Logo cliquable vers l'accueil -->
                 <a href="/" class="block transition-transform duration-300 hover:scale-105"
@@ -41,17 +91,54 @@
                         class="h-24 w-auto transition-transform duration-300" id="logo" />
                 </a>
             </div>
+
+            <!-- Navigation Desktop (identique à l'original) -->
             <nav class="hidden md:flex space-x-8 text-gray-800 font-medium">
-                <a href="/" class="hover:text-gray-600">Accueil</a>
-                <a href="/tarifs" class="hover:text-gray-600">Tarifs</a>
-                <a href="/subscribe" class="hover:text-gray-600">Abonnement</a>
+                <a href="{{ route('accueil') }}" class="hover:text-gray-600">Accueil</a>
+                <a href="{{ route('tariff') }}" class="hover:text-gray-600">Tarifs</a>
+                <a href="{{ route('abonnement') }}" class="hover:text-gray-600">Abonnement</a>
                 <a href="#contact" class="hover:text-gray-600">Contact</a>
             </nav>
-            <div>
+
+            <!-- Boutons Desktop + Mobile -->
+            <div class="flex items-center space-x-3">
+                <!-- Bouton Devis (toujours visible) -->
                 <a href="#devis"
-                    class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors duration-300">Devis
-                    Gratuit</a>
+                    class="bg-black text-white px-3 md:px-4 py-2 rounded-md hover:bg-gray-800 transition-colors duration-300 text-sm md:text-base">
+                    <span class="hidden sm:inline">Devis Gratuit</span>
+                    <span class="sm:hidden">Devis</span>
+                </a>
+
+                <!-- Bouton Menu Mobile/Tablette -->
+                <button class="md:hidden hamburger p-2 rounded-md hover:bg-gray-100 transition-colors duration-200"
+                    id="mobile-menu-btn" aria-label="Menu de navigation" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
+        </div>
+
+        <!-- Menu Mobile/Tablette -->
+        <div class="md:hidden bg-white border-t border-gray-200 shadow-lg hidden" id="mobile-menu">
+            <nav class="px-6 py-6 space-y-4">
+                <a href="/"
+                    class="block py-4 px-6 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 text-lg">
+                    Accueil
+                </a>
+                <a href="{{ route('tariff') }}"
+                    class="block py-4 px-6 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 text-lg">
+                    Tarifs
+                </a>
+                <a href="/abonnement"
+                    class="block py-4 px-6 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 text-lg">
+                    Abonnement
+                </a>
+                <a href="#contact"
+                    class="block py-4 px-6 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 text-lg">
+                    Contact
+                </a>
+            </nav>
         </div>
     </header>
 
@@ -448,6 +535,46 @@
                 });
             });
         })();
+        // Gestion du menu mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Toggle du menu mobile
+        mobileMenuBtn.addEventListener('click', function() {
+            const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                // Fermer le menu
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                // Ouvrir le menu
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('menu-enter');
+                mobileMenuBtn.classList.add('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Fermer le menu en cliquant sur un lien
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Fermer le menu mobile au redimensionnement vers desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) { // md breakpoint
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
     </script>
 </body>
 

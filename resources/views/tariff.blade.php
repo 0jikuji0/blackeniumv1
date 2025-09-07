@@ -19,7 +19,7 @@
         </a>
       </div>
       <nav class="hidden md:flex space-x-8 text-gray-800 font-medium">
-        <a href="index.html#accueil" class="hover:text-gray-600">Accueil</a>
+        <a href="{{ route('accueil') }}" class="hover:text-gray-600">Accueil</a>
         <a href="tariff.html" class="text-gray-900 font-semibold">Tarifs</a>
         <a href="abonnement.html" class="hover:text-gray-600">Abonnement</a>
         <a href="index.html#contact" class="hover:text-gray-600">Contact</a>

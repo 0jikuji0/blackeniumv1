@@ -59,3 +59,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+mettre la responsive partout
+mettre header et footer a part et les appeler 
+mettre les langue avec un bouton pour changer de fr/en 
+
+header et footer dans les conditions et tout 
+replacer correctement les mails 
+mettre reseaux sociaux X + tiktok 
+<!-- dashboard pour voir le nombre de vue sur le site  -->
