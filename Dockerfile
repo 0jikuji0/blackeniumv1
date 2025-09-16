@@ -25,3 +25,13 @@ RUN a2enmod rewrite
 # Donner les bonnes permissions aux dossiers Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Créer et donner les permissions aux dossiers nécessaires
+RUN mkdir -p /var/www/html/storage/framework/sessions
+RUN mkdir -p /var/www/html/storage/framework/views
+RUN mkdir -p /var/www/html/storage/logs
+RUN chown -R www-data:www-data /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/database
+RUN chmod -R 775 /var/www/html/storage
+RUN chmod -R 775 /var/www/html/bootstrap/cache
+RUN chmod 664 /var/www/html/database/database.sqlite
