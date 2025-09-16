@@ -21,3 +21,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Configuration Apache pour Laravel
 RUN a2enmod rewrite
+
+# Donner les bonnes permissions aux dossiers Laravel
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
