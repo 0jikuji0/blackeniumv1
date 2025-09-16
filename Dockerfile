@@ -34,4 +34,4 @@ RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/database
 RUN chmod -R 775 /var/www/html/storage
 RUN chmod -R 775 /var/www/html/bootstrap/cache
-RUN chmod 664 /var/www/html/database/database.sqlite
+RUN touch /var/www/html/database/database.sqlite && chmod 664 /var/www/html/database/database.sqlite
