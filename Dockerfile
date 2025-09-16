@@ -17,7 +17,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . /var/www/html/
 
 # Installer les dépendances
-RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html
+WORKDIR /var/www/html
+RUN composer install --no-dev --optimize-autoloader
 
 # Configurer Apache pour pointer vers /public
 RUN a2enmod rewrite
@@ -32,8 +33,12 @@ RUN mkdir -p /var/www/html/storage/logs
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chmod -R 775 /var/www/html/storage
 
+# Copier le script d'entrée
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Exposer Apache
 EXPOSE 80
 
-# Lancer Apache
-CMD ["apache2-foreground"]
+# Lancer via entrypoint
+ENTRYPOINT ["entrypoint.sh"]
