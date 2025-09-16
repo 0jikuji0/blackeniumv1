@@ -1,1 +1,6 @@
-DirectoryIndex index.php index.html
+# Rediriger tout vers le dossier public
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Définir l'index dans public
+DirectoryIndex public/index.php public/index.html
