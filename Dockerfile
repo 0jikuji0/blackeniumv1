@@ -13,25 +13,27 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copier le code
+# Copier le code Laravel
 COPY . /var/www/html/
 
 # Installer les dépendances
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html
 
-# Configuration Apache pour Laravel
+# Configurer Apache pour pointer vers /public
 RUN a2enmod rewrite
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/|/var/www/html/public|g' /etc/apache2/apache2.conf
 
-# Donner les bonnes permissions aux dossiers Laravel
+# Donner les bonnes permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-# Créer et donner les permissions aux dossiers nécessaires
-RUN mkdir -p /var/www/html/storage/framework/sessions
-RUN mkdir -p /var/www/html/storage/framework/views
+RUN mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 RUN mkdir -p /var/www/html/storage/logs
 RUN chown -R www-data:www-data /var/www/html/storage
-RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
-RUN chown -R www-data:www-data /var/www/html/database
 RUN chmod -R 775 /var/www/html/storage
-RUN chmod -R 775 /var/www/html/bootstrap/cache
-RUN touch /var/www/html/database/database.sqlite && chmod 664 /var/www/html/database/database.sqlite
+
+# Exposer Apache
+EXPOSE 80
+
+# Lancer Apache
+CMD ["apache2-foreground"]
